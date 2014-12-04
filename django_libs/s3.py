@@ -15,6 +15,12 @@ class CachedS3BotoStorage(S3BotoStorage):
         self.local_storage._save(name, content)
         return name
 
+     def url(self, name):
+        url = super(CachedS3BotoStorage, self).url(name)
+        if name.endswith('/') and not url.endswith('/'):
+            url += '/'
+        return url
+
 
 CompressorS3BotoStorage = lambda: CachedS3BotoStorage(location='compressor')
 MediaRootS3BotoStorage = lambda: S3BotoStorage(location='media')
